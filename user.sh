@@ -6,7 +6,6 @@ cd "`dirname "$0"`" || exit 1
 
 PATH="$PATH:${PWD}"
 
-basic_auth=""
 atoken="xxxxx"
 base_uri="http://scim-sv.example.jp"
 user_uri="${base_uri}/Users"
@@ -49,7 +48,6 @@ check_file() {
 my_curl() {
     curl \
       -D - \
-      --connect-timeout 3 \
       -sS \
       -H "Authorization: Bearer $atoken" \
       -H "Content-Type: application/scim+json" \
@@ -59,7 +57,6 @@ my_curl() {
 
 my_curl_withoutheaders() {
     curl \
-      --connect-timeout 3 \
       -sS \
       -H "Authorization: Bearer $atoken" \
       -H "Content-Type: application/scim+json" \
@@ -85,7 +82,7 @@ user_search() {
 
 get_user_id() {
     user_search | ./parsrj.sh | ./unescj.sh \
-      | grep '^\$.Resources\[0\].id ' | sed 's/^[^ ]* //'
+    | grep '^\$.Resources\[0\].id ' | sed 's/^[^ ]* //'
 }
 
 user_del() {
